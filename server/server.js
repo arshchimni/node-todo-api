@@ -22,9 +22,15 @@ testInsert.save()
 .then((result)=>res.status(200).send(result)).
 catch((err)=>res.status(400).send(err));
 
-
-
 });
+
+app.get("/todos",(req,res)=>{
+        Todo.find()
+        .then((results)=>{
+                res.status(200).send({results});
+        })
+        .catch((err)=>res.status(400).send(err));
+})
 
 app.listen(3000,(err)=>{
         if(err) throw err;
