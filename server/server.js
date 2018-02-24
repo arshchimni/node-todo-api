@@ -35,7 +35,7 @@ app.listen(3000,(err)=>{
 
 
 
-
+module.exports.app=app;
 
 
 // let testUser= new userInfo({
