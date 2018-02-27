@@ -8,6 +8,8 @@ const {userInfo}= require('./db/models/User');
 
 let app = express();
 
+const port = process.env.PORT||3000;
+
 app.use(bodyParser.json());
 
 app.post('/todo',(req,res)=>{
@@ -45,10 +47,10 @@ app.get('/todo/:id',(req,res)=>{
         .catch((err)=>res.status(400).send());
 })
 
-app.listen(3000,(err)=>{
+app.listen(port,(err)=>{
         if(err) throw err;
         else{
-                console.log('server running at port 3000');
+                console.log(`server running at ${port}`);
         }
 });
 
