@@ -95,7 +95,20 @@ app.post('/users', (req, res) => {
 
 });
 
-
+app.post('/users/login',(req,res)=>{
+        var body = _.pick(req.body,["email","password"]);
+        userInfo.findByCredentials(body.email,body.password)
+        .then((user)=>{
+                return user.getAuthToken()
+                .then((token)=>{
+                        res.status(200).header('x-auth',token).send(user)
+                })
+                
+        })
+        .catch((err)=>{
+                res.status(401).send();
+        });
+});
 
 app.get('/users/me',authenticate,(req,res)=>{
        res.status(200).send(req.user);
