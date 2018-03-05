@@ -103,7 +103,6 @@ app.post('/users/login',(req,res)=>{
                 .then((token)=>{
                         res.status(200).header('x-auth',token).send(user)
                 })
-                
         })
         .catch((err)=>{
                 res.status(401).send();
@@ -121,15 +120,16 @@ app.listen(port, (err) => {
         }
 });
 
+app.delete("/users/me/token",authenticate,(req,res)=>{
+        req.user.removeToken(req.token)
+        .then(()=>{
+                res.status(200).send();
+        })
+        .catch((err)=>{
+                res.status(400).send();
+        });
+});
 
 
 module.exports.app = app;
 
-
-// let testUser= new userInfo({
-//         email:'ishdeep@gmail.com'
-// });
-
-// testUser.save()
-// .then((result)=>console.log(result))
-// .catch((err)=>console.log(err));

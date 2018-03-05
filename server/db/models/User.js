@@ -1,5 +1,3 @@
-
-
 const mongoose=require('mongoose');
 const validator=require('validator');
 const jwt = require('jsonwebtoken');
@@ -52,9 +50,21 @@ userSchema.methods.getAuthToken = function(){
 
     return user.save().then(()=>{
         return token
-    })
+    });
 };
 
+//instance method
+userSchema.methods.removeToken= function(token){
+    let user = this;
+    return user.update({
+        $pull:{
+            tokens:{
+                token:token
+            }
+        }
+    });
+
+}
 
 //model method
 userSchema.statics.findByToken = function(token){
@@ -74,7 +84,7 @@ userSchema.statics.findByToken = function(token){
         '_id':decoded,
         'tokens.token':token,
         'tokens.acess':'auth'
-    })
+    });
 };
 //mongoose middle ware , run it before save event
 userSchema.pre('save',function(next){
@@ -84,16 +94,16 @@ userSchema.pre('save',function(next){
      bcrypt.hash(user.password,salt,(err,hash)=>{
          user.password= hash;
          next();
-     })
- })
+     });
+ });
 }else{
     next();
 }
 });
 
+//model method
 userSchema.statics.findByCredentials=function(email,password){
     let userInfo=this;
-    
     return userInfo.findOne({
         'email':email
     }).then((user)=>{
